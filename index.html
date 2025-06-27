@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatBot - Soporte Técnico</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-window {
+      width: 360px;
+      height: 500px;
+      background: linear-gradient(to bottom right, #0a0f4c, #000000);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-container {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      color: white;
+    }
+
+    .chat-bubble {
+      max-width: 80%;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      word-wrap: break-word;
+    }
+
+    .bot-bubble {
+      align-self: flex-start;
+      background-color: #1e3a8a;
+    }
+
+    .user-bubble {
+      align-self: flex-end;
+      background-color: #2563eb;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 10px;
+      background-color: #0a0f4c;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 8px 12px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .quick-reply-btn {
+      background-color: #1e40af;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-window">
+    <div class="chat-container" id="chat">
+      <div class="chat-bubble bot-bubble">¡Hola! Bienvenido a nuestro servicio técnico. ¿En qué podemos ayudarte hoy?</div>
+      <div class="quick-replies">
+        <button class="quick-reply-btn" onclick="sendQuickReply('Necesito mantenimiento a mi computador')">Mantenimiento</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Quiero comprar repuestos o componentes')">Repuestos</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Estoy interesado en un celular nuevo')">Celulares</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Busco un computador gamer')">PC Gamer</button>
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const message = input.value.trim();
+      if (!message) return;
+      appendMessage(message, 'user');
+      input.value = '';
+      botReply(message);
+    }
+
+    function sendQuickReply(message) {
+      appendMessage(message, 'user');
+      botReply(message);
+    }
+
+    function appendMessage(text, sender) {
+      const chat = document.getElementById('chat');
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + (sender === 'user' ? 'user-bubble' : 'bot-bubble');
+      bubble.textContent = text;
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function botReply(userMessage) {
+      let reply = '';
+      if (userMessage.includes('mantenimiento')) {
+        reply = 'Ofrecemos limpieza, cambio de pasta térmica, y revisión completa. ¿Deseas agendar?';
+      } else if (userMessage.includes('repuestos')) {
+        reply = 'Tenemos discos SSD, RAM, cargadores, pantallas y más. ¿Qué buscas exactamente?';
+      } else if (userMessage.includes('celular')) {
+        reply = 'Vendemos celulares nuevos y reacondicionados de alta calidad. ¿Qué marca te interesa?';
+      } else if (userMessage.includes('gamer')) {
+        reply = 'Nuestros PCs gamer cuentan con GPU dedicada, SSD y refrigeración avanzada. ¿Cuál es tu presupuesto?';
+      } else {
+        reply = 'Gracias por tu mensaje. ¿Podrías darme más detalles para ayudarte mejor?';
+      }
+      setTimeout(() => appendMessage(reply, 'bot'), 500);
+    }
+  </script>
+</body>
+</html>
+ 
