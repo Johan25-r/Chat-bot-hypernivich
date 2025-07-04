@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #002147, #004080);
+      background: linear-gradient(135deg, #0a0f2c, #0e2a47);
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -19,7 +19,7 @@
     .page-container {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #002147, #004080);
+      background: linear-gradient(135deg, #0a0f2c, #0e2a47);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -28,21 +28,23 @@
     .chatbot-container {
       width: 350px;
       height: 600px;
-      background: linear-gradient(180deg, #003366, #0059b3);
+      background: linear-gradient(180deg, #0d1b3b, #12375b);
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
       display: flex;
       flex-direction: column;
       color: #fff;
     }
 
     .chatbot-header {
-      background: linear-gradient(90deg, #003366, #0059b3);
+      background: linear-gradient(90deg, #0d1b3b, #12375b);
       color: #fff;
       padding: 15px;
       text-align: center;
       font-weight: bold;
       font-size: 18px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
     }
 
     .chatbot-messages {
@@ -54,8 +56,10 @@
 
     .chatbot-input {
       display: flex;
-      border-top: 1px solid rgba(255,255,255,0.3);
+      border-top: 1px solid rgba(255,255,255,0.2);
       background-color: rgba(0, 0, 0, 0.1);
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
     }
 
     .chatbot-input input {
@@ -65,14 +69,16 @@
       outline: none;
       background: rgba(255,255,255,0.8);
       border-radius: 0;
+      font-size: 14px;
     }
 
     .chatbot-input button {
-      background-color: #0059b3;
+      background-color: #1e40af;
       border: none;
       color: white;
       padding: 10px 15px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     .chat-option {
@@ -81,6 +87,11 @@
       border-radius: 10px;
       margin: 5px 0;
       cursor: pointer;
+      font-size: 14px;
+    }
+
+    .chat-option:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -89,6 +100,7 @@
 <div class="page-container">
   <div class="chatbot-container">
     <div class="chatbot-header">Hypernivich Asistente Virtual</div>
+
     <div class="chatbot-messages" id="chatbox">
       <div>👋 ¡Hola! Soy el asistente de <b>Hypernivich</b>. ¿En qué puedo ayudarte?</div>
       <div class="chat-option" onclick="showService('mantenimiento')">🛠 Mantenimiento Preventivo/Correctivo</div>
@@ -98,6 +110,7 @@
       <div class="chat-option" onclick="showService('horarios')">⏰ Horarios de Atención</div>
       <div class="chat-option" onclick="showService('domicilio')">🚚 Servicio a Domicilio</div>
     </div>
+
     <div class="chatbot-input">
       <input type="text" id="userInput" placeholder="Escribe tu mensaje o pregunta...">
       <button onclick="sendMessage()">Enviar</button>
@@ -111,50 +124,70 @@
     const chatbox = document.getElementById("chatbox");
     const userText = input.value.trim();
     if (userText === "") return;
+
     chatbox.innerHTML += `<div><b>Tú:</b> ${userText}</div>`;
 
-    let response = "🤖 Lo siento, no entendí tu solicitud. Por favor elige una opción o formula tu pregunta de otra manera.";
+    let msg = userText.toLowerCase();
+    let response = "🤖 No entendí tu solicitud. Por favor elige una opción o reformula tu pregunta.";
 
-    if (userText.toLowerCase().includes("mantenimiento")) {
-      response = `🔧 Ofrecemos:
+    if (msg.includes("hola") || msg.includes("buenas") || msg.includes("hey") || msg.includes("saludos")) {
+      response = "👋 ¡Hola! ¿Cómo puedo ayudarte hoy? Puedo asistirte con servicios, productos, horarios o agendar tu cita.";
+    } 
+    else if (msg.includes("gracias") || msg.includes("thank you")) {
+      response = "🙏 ¡Con gusto! Si necesitas algo más, estoy aquí para ayudarte.";
+    } 
+    else if (msg.includes("adiós") || msg.includes("chao") || msg.includes("bye")) {
+      response = "👋 ¡Hasta luego! Gracias por preferir Hypernivich.";
+    } 
+    else if (msg.includes("mantenimiento") || msg.includes("arreglo") || msg.includes("reparación") || msg.includes("formateo")) {
+      response = `🔧 Servicios de Mantenimiento:
         <ul>
-          <li>Mantenimiento Preventivo: $50.000 COP</li>
-          <li>Mantenimiento Correctivo: Desde $80.000 COP</li>
-        </ul>`;
-    } else if (userText.toLowerCase().includes("celular") || userText.toLowerCase().includes("iphone") || userText.toLowerCase().includes("samsung")) {
+          <li>✅ Preventivo: $50.000 COP</li>
+          <li>✅ Correctivo: Desde $80.000 COP</li>
+        </ul> ¿Deseas agendar tu cita o necesitas más información?`;
+    } 
+    else if (msg.includes("celular") || msg.includes("iphone") || msg.includes("samsung") || msg.includes("xiaomi") || msg.includes("smartphone")) {
       response = `📱 Catálogo de Celulares:
         <ul>
           <li>iPhone 13 - $3.200.000 COP</li>
           <li>Samsung Galaxy S23 - $2.800.000 COP</li>
           <li>Xiaomi Redmi Note 13 - $1.200.000 COP</li>
-        </ul>`;
-    } else if (userText.toLowerCase().includes("pc") || userText.toLowerCase().includes("gamer")) {
-      response = `💻 PC Gamer disponibles:
+        </ul> ¿Quieres saber disponibilidad o recomendación?`;
+    } 
+    else if (msg.includes("pc") || msg.includes("gamer") || msg.includes("computador")) {
+      response = `💻 PC Gamer:
         <ul>
           <li>HP Omen RTX 4060 - $5.800.000 COP</li>
           <li>Lenovo Legion 5 RTX 4070 - $7.500.000 COP</li>
           <li>Asus ROG Strix - $9.200.000 COP</li>
-        </ul>`;
-    } else if (userText.toLowerCase().includes("cita") || userText.toLowerCase().includes("agendar")) {
-      response = `📅 Para agendar cita, por favor indícame:
+        </ul> ¿Te ayudo a elegir la mejor opción?`;
+    } 
+    else if (msg.includes("cita") || msg.includes("agendar") || msg.includes("agenda") || msg.includes("reserva")) {
+      response = `📅 Para agendar una cita por favor dime:
         <ul>
           <li>👉 Tu Nombre</li>
-          <li>👉 Número de Teléfono</li>
+          <li>👉 Tu Teléfono</li>
           <li>👉 Fecha y hora deseada</li>
-        </ul>
-        Te confirmaremos la disponibilidad ✅`;
-    } else if (userText.toLowerCase().includes("horario")) {
-      response = `⏰ Nuestros horarios de atención son:
+        </ul> ¡Te confirmaremos disponibilidad pronto! ✅`;
+    } 
+    else if (msg.includes("horario") || msg.includes("hora") || msg.includes("atención") || msg.includes("abren")) {
+      response = `⏰ Horarios:
         <ul>
           <li>Lunes a Viernes: 8:00 am - 6:00 pm</li>
           <li>Sábados: 9:00 am - 2:00 pm</li>
+          <li>Domingos: Cerrado</li>
         </ul>`;
-    } else if (userText.toLowerCase().includes("domicilio")) {
-      response = `🚚 Ofrecemos servicio a domicilio en todo el área metropolitana.
+    } 
+    else if (msg.includes("domicilio") || msg.includes("envío") || msg.includes("delivery")) {
+      response = `🚚 Servicio a Domicilio:
         <ul>
-          <li>Costo: Desde $10.000 COP según ubicación</li>
-          <li>Tiempo estimado: 1 a 2 horas</li>
-        </ul>`;
+          <li>Costo: Desde $10.000 COP</li>
+          <li>Recogida o entrega de equipos o productos</li>
+          <li>Tiempo: 1-2 horas aprox.</li>
+        </ul> ¿Te gustaría programarlo?`;
+    } 
+    else if (msg.match(/\d{7,}/) || msg.includes("me llamo") || msg.includes("mi nombre es")) {
+      response = `✅ Gracias por compartir tus datos. Un asesor se comunicará contigo muy pronto.`;
     }
 
     chatbox.innerHTML += `<div>${response}</div>`;
@@ -165,47 +198,45 @@
   function showService(service) {
     const chatbox = document.getElementById("chatbox");
     let response = "";
+
     if(service === 'mantenimiento') {
-      response = `<div>🔧 Ofrecemos:
+      response = `<div>🔧 Mantenimiento:
         <ul>
-          <li>Mantenimiento Preventivo: $50.000 COP</li>
-          <li>Mantenimiento Correctivo: Desde $80.000 COP</li>
+          <li>Preventivo: $50.000 COP</li>
+          <li>Correctivo: Desde $80.000 COP</li>
         </ul></div>`;
     } else if(service === 'celulares') {
-      response = `<div>📱 Catálogo de Celulares:
+      response = `<div>📱 Celulares:
         <ul>
           <li>iPhone 13 - $3.200.000 COP</li>
-          <li>Samsung Galaxy S23 - $2.800.000 COP</li>
-          <li>Xiaomi Redmi Note 13 - $1.200.000 COP</li>
+          <li>Samsung S23 - $2.800.000 COP</li>
+          <li>Redmi Note 13 - $1.200.000 COP</li>
         </ul></div>`;
     } else if(service === 'pcgamer') {
-      response = `<div>💻 PC Gamer disponibles:
+      response = `<div>💻 PCs Gamer:
         <ul>
           <li>HP Omen RTX 4060 - $5.800.000 COP</li>
           <li>Lenovo Legion 5 RTX 4070 - $7.500.000 COP</li>
           <li>Asus ROG Strix - $9.200.000 COP</li>
         </ul></div>`;
     } else if(service === 'cita') {
-      response = `<div>📅 Para agendar cita, por favor indícame:
+      response = `<div>📅 Agenda tu cita enviándome:
         <ul>
-          <li>👉 Tu Nombre</li>
-          <li>👉 Número de Teléfono</li>
-          <li>👉 Fecha y hora deseada</li>
-        </ul>
-        Te confirmaremos la disponibilidad ✅</div>`;
+          <li>Nombre</li>
+          <li>Teléfono</li>
+          <li>Fecha deseada</li>
+        </ul></div>`;
     } else if(service === 'horarios') {
-      response = `<div>⏰ Nuestros horarios de atención son:
+      response = `<div>⏰ Horarios:
         <ul>
-          <li>Lunes a Viernes: 8:00 am - 6:00 pm</li>
-          <li>Sábados: 9:00 am - 2:00 pm</li>
+          <li>L-V: 8am-6pm</li>
+          <li>Sáb: 9am-2pm</li>
+          <li>Domingo: Cerrado</li>
         </ul></div>`;
     } else if(service === 'domicilio') {
-      response = `<div>🚚 Ofrecemos servicio a domicilio en todo el área metropolitana.
-        <ul>
-          <li>Costo: Desde $10.000 COP según ubicación</li>
-          <li>Tiempo estimado: 1 a 2 horas</li>
-        </ul></div>`;
+      response = `<div>🚚 Domicilios desde $10.000 COP (1-2h aprox.)</div>`;
     }
+
     chatbox.innerHTML += response;
     chatbox.scrollTop = chatbox.scrollHeight;
   }
