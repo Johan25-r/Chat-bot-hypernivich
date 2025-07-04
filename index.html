@@ -104,7 +104,7 @@
   <div class="chat-window">
     <div class="chat-container" id="chat">
       <div class="chat-bubble bot-bubble">
-        👋 ¡Hola! Soy <strong>Hypernivich</strong>. ¿En qué puedo ayudarte hoy?
+        👋 ¡Hola! Soy <strong>Hypernivich</strong>, tu asistente virtual. Estoy aquí para ayudarte con <strong>mantenimiento de computadoras, ventas de repuestos, celulares, PCs Gamer, horarios, domicilios y más</strong>. ¿Cómo puedo asistirte hoy?
       </div>
       <div class="calendar">
         <label for="calendarDate">📅 Agendar cita:</label>
@@ -125,7 +125,7 @@
       if (!message) return;
       appendMessage(message, 'user');
       input.value = '';
-      setTimeout(() => botReply(message), 400);
+      setTimeout(() => botReply(message), 500);
     }
 
     function appendMessage(text, sender) {
@@ -141,28 +141,32 @@
       const msg = message.toLowerCase();
       let reply = '';
 
-      if (msg.includes('mantenimiento')) {
-        reply = '🔧 Mantenimiento: $50.000 - $60.000 COP. ¿Deseas agendar?';
-      } else if (msg.includes('repuesto')) {
-        reply = '💾 Repuestos disponibles desde $85.000 COP. ¿Qué necesitas?';
-      } else if (msg.includes('celular')) {
-        reply = '📱 Celulares desde $680.000 COP. ¿Qué modelo te interesa?';
-      } else if (msg.includes('gamer')) {
-        reply = '🎮 PCs Gamer desde $2.500.000 COP. ¿Te ayudo a elegir?';
-      } else if (msg.includes('horario')) {
-        reply = '🕒 Horarios: L-V 9am-6pm, Sáb 9am-2pm.';
-      } else if (msg.includes('domicilio')) {
-        reply = '🚚 Sí ofrecemos domicilios. ¿Te gustaría programar uno?';
-      } else if (msg.includes('agendar')) {
-        reply = '📅 Por favor selecciona la fecha en el calendario o dime cuándo te gustaría agendar.';
-      } else if (/\d{7,}/.test(msg) || msg.includes('nombre')) {
-        reply = '✅ Gracias por compartir tu nombre o número. Un asesor se comunicará contigo.';
+      if (msg.includes('mantenimiento') || msg.includes('arreglo') || msg.includes('reparación')) {
+        reply = '🔧 Ofrecemos servicio de mantenimiento preventivo y correctivo para computadoras y portátiles. Precios desde <strong>$50.000 COP</strong>. ¿Quieres agendar tu cita o necesitas más información?';
+      } else if (msg.includes('repuesto') || msg.includes('pieza') || msg.includes('componente')) {
+        reply = '💾 Tenemos repuestos y componentes como discos, memorias RAM, pantallas y más, con precios desde <strong>$85.000 COP</strong>. ¿Sabes qué parte necesitas?';
+      } else if (msg.includes('celular') || msg.includes('teléfono') || msg.includes('smartphone')) {
+        reply = '📱 Vendemos celulares de diferentes marcas. Los precios comienzan desde <strong>$680.000 COP</strong>. ¿Qué marca o modelo te interesa?';
+      } else if (msg.includes('gamer') || msg.includes('gaming') || msg.includes('juegos')) {
+        reply = '🎮 Contamos con PC Gamer armados a tu gusto o ya listos, desde <strong>$2.500.000 COP</strong>. ¡Te ayudo a escoger según tus juegos favoritos!';
+      } else if (msg.includes('horario') || msg.includes('hora') || msg.includes('atención')) {
+        reply = '🕒 Nuestro horario es <strong>Lunes a Viernes de 9:00 am a 6:00 pm</strong> y <strong>Sábados de 9:00 am a 2:00 pm</strong>.';
+      } else if (msg.includes('domicilio') || msg.includes('envío') || msg.includes('entrega')) {
+        reply = '🚚 Sí realizamos domicilios en la ciudad. Podemos enviarte productos o recoger tu equipo para reparación. ¿A qué dirección te gustaría el servicio?';
+      } else if (msg.includes('agendar') || msg.includes('cita') || msg.includes('reserva')) {
+        reply = '📅 Por favor selecciona la fecha en el calendario o dime cuándo te gustaría agendar tu cita. También puedo ayudarte a completarla aquí mismo.';
+      } else if (/\d{7,}/.test(msg) || msg.includes('nombre') || msg.includes('teléfono')) {
+        reply = '✅ ¡Perfecto! Hemos recibido tus datos. Pronto un asesor se comunicará contigo para finalizar tu solicitud.';
       } else {
-        reply = '🤖 Soy Hypernivich. ¿Buscas mantenimiento, repuestos, celulares, PCs gamer o agendar cita?';
+        reply = '🤖 ¡Gracias por tu mensaje! Puedo ayudarte con servicios de <strong>mantenimiento, repuestos, compra de celulares, PCs gamer, horarios, domicilios o agendar una cita</strong>. ¿Podrías darme un poco más de detalle para poder asistirte mejor?';
       }
 
       appendMessage(reply, 'bot');
     }
+
+    document.getElementById("userInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
   </script>
 </body>
 </html>
