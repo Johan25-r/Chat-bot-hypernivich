@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChatBot - Soporte Técnico</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hypernivich - Soporte Técnico</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
@@ -18,7 +18,7 @@
 
     .chat-window {
       width: 500px;
-      height: 650px;
+      height: 700px;
       background: linear-gradient(to bottom right, #1e293b, #0f172a);
       border-radius: 20px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
@@ -88,33 +88,15 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 15px;
-      transition: background-color 0.3s ease;
     }
 
-    button:hover {
-      background-color: #2563eb;
-    }
-
-    .quick-replies {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .quick-reply-btn {
-      background-color: #1e40af;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      padding: 8px 14px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .quick-reply-btn:hover {
-      background-color: #3b82f6;
+    .calendar {
+      margin-top: 10px;
+      background: white;
+      color: black;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -122,14 +104,11 @@
   <div class="chat-window">
     <div class="chat-container" id="chat">
       <div class="chat-bubble bot-bubble">
-        👋 ¡Hola! Bienvenido a <strong>Tech Solutions</strong>, tu centro de soporte técnico, venta de repuestos, celulares y PCs gamer. 
-        <br><br>Por favor elige una opción o escribe tu consulta 👇
+        👋 ¡Hola! Soy <strong>Hypernivich</strong>. ¿En qué puedo ayudarte hoy?
       </div>
-      <div class="quick-replies">
-        <button class="quick-reply-btn" onclick="sendQuickReply('Quiero mantenimiento para mi computador')">🛠 Mantenimiento</button>
-        <button class="quick-reply-btn" onclick="sendQuickReply('Quiero comprar repuestos o componentes')">💾 Repuestos</button>
-        <button class="quick-reply-btn" onclick="sendQuickReply('Estoy interesado en un celular nuevo')">📱 Celulares</button>
-        <button class="quick-reply-btn" onclick="sendQuickReply('Busco un computador gamer')">🎮 PC Gamer</button>
+      <div class="calendar">
+        <label for="calendarDate">📅 Agendar cita:</label>
+        <input type="date" id="calendarDate">
       </div>
     </div>
 
@@ -146,12 +125,7 @@
       if (!message) return;
       appendMessage(message, 'user');
       input.value = '';
-      botReply(message);
-    }
-
-    function sendQuickReply(message) {
-      appendMessage(message, 'user');
-      botReply(message);
+      setTimeout(() => botReply(message), 400);
     }
 
     function appendMessage(text, sender) {
@@ -163,40 +137,32 @@
       chat.scrollTop = chat.scrollHeight;
     }
 
-    function botReply(userMessage) {
+    function botReply(message) {
+      const msg = message.toLowerCase();
       let reply = '';
-      const msg = userMessage.toLowerCase();
 
       if (msg.includes('mantenimiento')) {
-        reply = `
-        🔧 Ofrecemos los siguientes servicios de <strong>Mantenimiento</strong>:<br><br>
-        - Limpieza interna y externa: <strong>$50.000 COP</strong><br>
-        - Cambio de pasta térmica: <strong>$30.000 COP</strong><br>
-        - Formateo + optimización: <strong>$60.000 COP</strong><br>
-        - Diagnóstico completo: <strong>$25.000 COP</strong><br><br>
-        ¿Te gustaría agendar una cita o recibir estos servicios a domicilio?`;
-      } 
-      else if (msg.includes('repuestos')) {
-        reply = `
-        💽 <strong>Repuestos y Componentes Disponibles:</strong><br><br>
-        - Disco SSD 240GB: <strong>$85.000 COP</strong><br>
-        - Memoria RAM 8GB DDR4: <strong>$120.000 COP</strong><br>
-        - Pantallas para portátiles: <strong>Desde $180.000 COP</strong><br>
-        - Cargadores universales: <strong>$50.000 COP</strong><br><br>
-        ¿Qué repuesto necesitas o quieres que te asesoremos según tu equipo?`;
-      } 
-      else if (msg.includes('celular')) {
-        reply = `
-        📱 <strong>Celulares Disponibles:</strong><br><br>
-        - Xiaomi Redmi Note 13: <strong>$750.000 COP</strong><br>
-        - Samsung A15: <strong>$680.000 COP</strong><br>
-        - iPhone 12 128GB (Reacondicionado): <strong>$1.450.000 COP</strong><br><br>
-        Todos incluyen garantía de 6 meses. ¿Buscas alguna marca o presupuesto en específico?`;
-      } 
-      else if (msg.includes('gamer')) {
-        reply = `
-        🖥 <strong>Equipos Gamer Recomendados:</strong><br><br>
-        - Starter Gamer (GTX 1650, Ryzen 5, SSD 480GB): <strong>$2.500.000 COP</strong><br>
-        - Mid-Range Gamer (RTX 3060, i5 12va, SSD 1TB): <strong>$4.200.000 COP</strong><br>
-        - Pro Gamer (RTX 4070, i7 13va, SSD NVMe): <strong>$6.800.000 COP</strong><br><br>
-        ¿Te gustaría que armemos un equipo personalizado para ti o conocer opcione
+        reply = '🔧 Mantenimiento: $50.000 - $60.000 COP. ¿Deseas agendar?';
+      } else if (msg.includes('repuesto')) {
+        reply = '💾 Repuestos disponibles desde $85.000 COP. ¿Qué necesitas?';
+      } else if (msg.includes('celular')) {
+        reply = '📱 Celulares desde $680.000 COP. ¿Qué modelo te interesa?';
+      } else if (msg.includes('gamer')) {
+        reply = '🎮 PCs Gamer desde $2.500.000 COP. ¿Te ayudo a elegir?';
+      } else if (msg.includes('horario')) {
+        reply = '🕒 Horarios: L-V 9am-6pm, Sáb 9am-2pm.';
+      } else if (msg.includes('domicilio')) {
+        reply = '🚚 Sí ofrecemos domicilios. ¿Te gustaría programar uno?';
+      } else if (msg.includes('agendar')) {
+        reply = '📅 Por favor selecciona la fecha en el calendario o dime cuándo te gustaría agendar.';
+      } else if (/\d{7,}/.test(msg) || msg.includes('nombre')) {
+        reply = '✅ Gracias por compartir tu nombre o número. Un asesor se comunicará contigo.';
+      } else {
+        reply = '🤖 Soy Hypernivich. ¿Buscas mantenimiento, repuestos, celulares, PCs gamer o agendar cita?';
+      }
+
+      appendMessage(reply, 'bot');
+    }
+  </script>
+</body>
+</html>
