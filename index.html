@@ -2,171 +2,214 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hypernivich - Soporte Técnico</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hypernivich Chatbot</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #002147, #004080);
       margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: #0f172a;
+      padding: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
-    .chat-window {
-      width: 500px;
-      height: 700px;
-      background: linear-gradient(to bottom right, #1e293b, #0f172a);
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    .page-container {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #002147, #004080);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chatbot-container {
+      width: 350px;
+      height: 600px;
+      background: linear-gradient(180deg, #003366, #0059b3);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      border: 1px solid #334155;
+      color: #fff;
     }
 
-    .chat-container {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      color: #f1f5f9;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-bubble {
-      max-width: 90%;
-      margin-bottom: 14px;
-      padding: 14px 18px;
-      border-radius: 18px;
-      word-wrap: break-word;
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .bot-bubble {
-      align-self: flex-start;
-      background-color: #1d4ed8;
-    }
-
-    .user-bubble {
-      align-self: flex-end;
-      background-color: #2563eb;
-    }
-
-    .input-container {
-      display: flex;
+    .chatbot-header {
+      background: linear-gradient(90deg, #003366, #0059b3);
+      color: #fff;
       padding: 15px;
-      background-color: #1e293b;
-      border-top: 1px solid #334155;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
-      background-color: #0f172a;
-      color: #e2e8f0;
-      outline: none;
-    }
-
-    button {
-      margin-left: 10px;
-      padding: 10px 14px;
-      background-color: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .calendar {
-      margin-top: 10px;
-      background: white;
-      color: black;
-      border-radius: 10px;
-      padding: 10px;
       text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .chatbot-input {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.8);
+      border-radius: 0;
+    }
+
+    .chatbot-input button {
+      background-color: #0059b3;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .chat-option {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 8px;
+      border-radius: 10px;
+      margin: 5px 0;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="chat-window">
-    <div class="chat-container" id="chat">
-      <div class="chat-bubble bot-bubble">
-        👋 ¡Hola! Soy <strong>Hypernivich</strong>, tu asistente virtual. Estoy aquí para ayudarte con <strong>mantenimiento de computadoras, ventas de repuestos, celulares, PCs Gamer, horarios, domicilios y más</strong>. ¿Cómo puedo asistirte hoy?
-      </div>
-      <div class="calendar">
-        <label for="calendarDate">📅 Agendar cita:</label>
-        <input type="date" id="calendarDate">
-      </div>
-    </div>
 
-    <div class="input-container">
-      <input type="text" id="userInput" placeholder="Escribe tu mensaje..." />
+<div class="page-container">
+  <div class="chatbot-container">
+    <div class="chatbot-header">Hypernivich Asistente Virtual</div>
+    <div class="chatbot-messages" id="chatbox">
+      <div>👋 ¡Hola! Soy el asistente de <b>Hypernivich</b>. ¿En qué puedo ayudarte?</div>
+      <div class="chat-option" onclick="showService('mantenimiento')">🛠 Mantenimiento Preventivo/Correctivo</div>
+      <div class="chat-option" onclick="showService('celulares')">📱 Ver Catálogo de Celulares</div>
+      <div class="chat-option" onclick="showService('pcgamer')">💻 Ver PC Gamer</div>
+      <div class="chat-option" onclick="showService('cita')">📅 Agendar Cita</div>
+      <div class="chat-option" onclick="showService('horarios')">⏰ Horarios de Atención</div>
+      <div class="chat-option" onclick="showService('domicilio')">🚚 Servicio a Domicilio</div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="userInput" placeholder="Escribe tu mensaje o pregunta...">
       <button onclick="sendMessage()">Enviar</button>
     </div>
   </div>
+</div>
 
-  <script>
-    function sendMessage() {
-      const input = document.getElementById('userInput');
-      const message = input.value.trim();
-      if (!message) return;
-      appendMessage(message, 'user');
-      input.value = '';
-      setTimeout(() => botReply(message), 500);
+<script>
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const chatbox = document.getElementById("chatbox");
+    const userText = input.value.trim();
+    if (userText === "") return;
+    chatbox.innerHTML += `<div><b>Tú:</b> ${userText}</div>`;
+
+    let response = "🤖 Lo siento, no entendí tu solicitud. Por favor elige una opción o formula tu pregunta de otra manera.";
+
+    if (userText.toLowerCase().includes("mantenimiento")) {
+      response = `🔧 Ofrecemos:
+        <ul>
+          <li>Mantenimiento Preventivo: $50.000 COP</li>
+          <li>Mantenimiento Correctivo: Desde $80.000 COP</li>
+        </ul>`;
+    } else if (userText.toLowerCase().includes("celular") || userText.toLowerCase().includes("iphone") || userText.toLowerCase().includes("samsung")) {
+      response = `📱 Catálogo de Celulares:
+        <ul>
+          <li>iPhone 13 - $3.200.000 COP</li>
+          <li>Samsung Galaxy S23 - $2.800.000 COP</li>
+          <li>Xiaomi Redmi Note 13 - $1.200.000 COP</li>
+        </ul>`;
+    } else if (userText.toLowerCase().includes("pc") || userText.toLowerCase().includes("gamer")) {
+      response = `💻 PC Gamer disponibles:
+        <ul>
+          <li>HP Omen RTX 4060 - $5.800.000 COP</li>
+          <li>Lenovo Legion 5 RTX 4070 - $7.500.000 COP</li>
+          <li>Asus ROG Strix - $9.200.000 COP</li>
+        </ul>`;
+    } else if (userText.toLowerCase().includes("cita") || userText.toLowerCase().includes("agendar")) {
+      response = `📅 Para agendar cita, por favor indícame:
+        <ul>
+          <li>👉 Tu Nombre</li>
+          <li>👉 Número de Teléfono</li>
+          <li>👉 Fecha y hora deseada</li>
+        </ul>
+        Te confirmaremos la disponibilidad ✅`;
+    } else if (userText.toLowerCase().includes("horario")) {
+      response = `⏰ Nuestros horarios de atención son:
+        <ul>
+          <li>Lunes a Viernes: 8:00 am - 6:00 pm</li>
+          <li>Sábados: 9:00 am - 2:00 pm</li>
+        </ul>`;
+    } else if (userText.toLowerCase().includes("domicilio")) {
+      response = `🚚 Ofrecemos servicio a domicilio en todo el área metropolitana.
+        <ul>
+          <li>Costo: Desde $10.000 COP según ubicación</li>
+          <li>Tiempo estimado: 1 a 2 horas</li>
+        </ul>`;
     }
 
-    function appendMessage(text, sender) {
-      const chat = document.getElementById('chat');
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-bubble ' + (sender === 'user' ? 'user-bubble' : 'bot-bubble');
-      bubble.innerHTML = text;
-      chat.appendChild(bubble);
-      chat.scrollTop = chat.scrollHeight;
+    chatbox.innerHTML += `<div>${response}</div>`;
+    input.value = "";
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  function showService(service) {
+    const chatbox = document.getElementById("chatbox");
+    let response = "";
+    if(service === 'mantenimiento') {
+      response = `<div>🔧 Ofrecemos:
+        <ul>
+          <li>Mantenimiento Preventivo: $50.000 COP</li>
+          <li>Mantenimiento Correctivo: Desde $80.000 COP</li>
+        </ul></div>`;
+    } else if(service === 'celulares') {
+      response = `<div>📱 Catálogo de Celulares:
+        <ul>
+          <li>iPhone 13 - $3.200.000 COP</li>
+          <li>Samsung Galaxy S23 - $2.800.000 COP</li>
+          <li>Xiaomi Redmi Note 13 - $1.200.000 COP</li>
+        </ul></div>`;
+    } else if(service === 'pcgamer') {
+      response = `<div>💻 PC Gamer disponibles:
+        <ul>
+          <li>HP Omen RTX 4060 - $5.800.000 COP</li>
+          <li>Lenovo Legion 5 RTX 4070 - $7.500.000 COP</li>
+          <li>Asus ROG Strix - $9.200.000 COP</li>
+        </ul></div>`;
+    } else if(service === 'cita') {
+      response = `<div>📅 Para agendar cita, por favor indícame:
+        <ul>
+          <li>👉 Tu Nombre</li>
+          <li>👉 Número de Teléfono</li>
+          <li>👉 Fecha y hora deseada</li>
+        </ul>
+        Te confirmaremos la disponibilidad ✅</div>`;
+    } else if(service === 'horarios') {
+      response = `<div>⏰ Nuestros horarios de atención son:
+        <ul>
+          <li>Lunes a Viernes: 8:00 am - 6:00 pm</li>
+          <li>Sábados: 9:00 am - 2:00 pm</li>
+        </ul></div>`;
+    } else if(service === 'domicilio') {
+      response = `<div>🚚 Ofrecemos servicio a domicilio en todo el área metropolitana.
+        <ul>
+          <li>Costo: Desde $10.000 COP según ubicación</li>
+          <li>Tiempo estimado: 1 a 2 horas</li>
+        </ul></div>`;
     }
+    chatbox.innerHTML += response;
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+</script>
 
-    function botReply(message) {
-      const msg = message.toLowerCase();
-      let reply = '';
-
-      if (msg.includes('mantenimiento') || msg.includes('arreglo') || msg.includes('reparación')) {
-        reply = '🔧 Ofrecemos servicio de mantenimiento preventivo y correctivo para computadoras y portátiles. Precios desde <strong>$50.000 COP</strong>. ¿Quieres agendar tu cita o necesitas más información?';
-      } else if (msg.includes('repuesto') || msg.includes('pieza') || msg.includes('componente')) {
-        reply = '💾 Tenemos repuestos y componentes como discos, memorias RAM, pantallas y más, con precios desde <strong>$85.000 COP</strong>. ¿Sabes qué parte necesitas?';
-      } else if (msg.includes('celular') || msg.includes('teléfono') || msg.includes('smartphone')) {
-        reply = '📱 Vendemos celulares de diferentes marcas. Los precios comienzan desde <strong>$680.000 COP</strong>. ¿Qué marca o modelo te interesa?';
-      } else if (msg.includes('gamer') || msg.includes('gaming') || msg.includes('juegos')) {
-        reply = '🎮 Contamos con PC Gamer armados a tu gusto o ya listos, desde <strong>$2.500.000 COP</strong>. ¡Te ayudo a escoger según tus juegos favoritos!';
-      } else if (msg.includes('horario') || msg.includes('hora') || msg.includes('atención')) {
-        reply = '🕒 Nuestro horario es <strong>Lunes a Viernes de 9:00 am a 6:00 pm</strong> y <strong>Sábados de 9:00 am a 2:00 pm</strong>.';
-      } else if (msg.includes('domicilio') || msg.includes('envío') || msg.includes('entrega')) {
-        reply = '🚚 Sí realizamos domicilios en la ciudad. Podemos enviarte productos o recoger tu equipo para reparación. ¿A qué dirección te gustaría el servicio?';
-      } else if (msg.includes('agendar') || msg.includes('cita') || msg.includes('reserva')) {
-        reply = '📅 Por favor selecciona la fecha en el calendario o dime cuándo te gustaría agendar tu cita. También puedo ayudarte a completarla aquí mismo.';
-      } else if (/\d{7,}/.test(msg) || msg.includes('nombre') || msg.includes('teléfono')) {
-        reply = '✅ ¡Perfecto! Hemos recibido tus datos. Pronto un asesor se comunicará contigo para finalizar tu solicitud.';
-      } else {
-        reply = '🤖 ¡Gracias por tu mensaje! Puedo ayudarte con servicios de <strong>mantenimiento, repuestos, compra de celulares, PCs gamer, horarios, domicilios o agendar una cita</strong>. ¿Podrías darme un poco más de detalle para poder asistirte mejor?';
-      }
-
-      appendMessage(reply, 'bot');
-    }
-
-    document.getElementById("userInput").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
 </body>
 </html>
