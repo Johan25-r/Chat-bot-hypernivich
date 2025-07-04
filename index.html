@@ -3,84 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChatBot Soporte</title>
+  <title>ChatBot - Soporte Técnico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #000;
+      font-family: 'Roboto', sans-serif;
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    #chatbot {
-      width: 360px;
-      height: 500px;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: linear-gradient(145deg, #0f172a, #1e3a8a);
+    .chat-window {
+      width: 500px;
+      height: 650px;
+      background: linear-gradient(to bottom right, #1e293b, #0f172a);
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
-      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
-      z-index: 9999;
+      overflow: hidden;
+      border: 1px solid #334155;
     }
 
-    #chatHeader {
-      background-color: rgba(0, 0, 0, 0.4);
-      color: #fff;
-      text-align: center;
-      padding: 15px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    #chatMessages {
+    .chat-container {
       flex: 1;
-      padding: 10px;
+      padding: 20px;
       overflow-y: auto;
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .botMessage, .userMessage {
-      margin: 8px 0;
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 80%;
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    .botMessage {
-      background-color: rgba(0, 0, 0, 0.3);
-      align-self: flex-start;
-    }
-
-    .userMessage {
-      background-color: #2563eb;
-      align-self: flex-end;
-    }
-
-    #quickReplies {
+      color: #f1f5f9;
       display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
-      gap: 8px;
+      flex-direction: column;
     }
 
-    .replyBtn {
-      background: #1e40af;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: background 0.3s;
-    }
-
-    .replyBtn:hover {
-      background: #3b82f6;
+    .chat-bubble {
+      max-width: 90%;
+      margin-bottom: 14px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease;
     }
 
     @keyframes fadeIn {
@@ -88,111 +51,152 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    #inputArea {
+    .bot-bubble {
+      align-self: flex-start;
+      background-color: #1d4ed8;
+    }
+
+    .user-bubble {
+      align-self: flex-end;
+      background-color: #2563eb;
+    }
+
+    .input-container {
       display: flex;
-      border-top: 1px solid #1e3a8a;
+      padding: 15px;
+      background-color: #1e293b;
+      border-top: 1px solid #334155;
     }
 
-    #userInput {
+    input[type="text"] {
       flex: 1;
+      padding: 12px;
       border: none;
-      padding: 10px;
-      font-size: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      background-color: #0f172a;
+      color: #e2e8f0;
       outline: none;
-      border-radius: 0 0 0 15px;
     }
 
-    #sendBtn {
-      background: #1e40af;
+    button {
+      margin-left: 10px;
+      padding: 10px 14px;
+      background-color: #3b82f6;
       color: white;
       border: none;
-      padding: 10px;
+      border-radius: 10px;
       cursor: pointer;
-      border-radius: 0 0 15px 0;
+      font-size: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .quick-reply-btn {
+      background-color: #1e40af;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .quick-reply-btn:hover {
+      background-color: #3b82f6;
     }
   </style>
 </head>
 <body>
+  <div class="chat-window">
+    <div class="chat-container" id="chat">
+      <div class="chat-bubble bot-bubble">
+        👋 ¡Hola! Bienvenido a <strong>Tech Solutions</strong>, tu centro de soporte técnico, venta de repuestos, celulares y PCs gamer. 
+        <br><br>Por favor elige una opción o escribe tu consulta 👇
+      </div>
+      <div class="quick-replies">
+        <button class="quick-reply-btn" onclick="sendQuickReply('Quiero mantenimiento para mi computador')">🛠 Mantenimiento</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Quiero comprar repuestos o componentes')">💾 Repuestos</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Estoy interesado en un celular nuevo')">📱 Celulares</button>
+        <button class="quick-reply-btn" onclick="sendQuickReply('Busco un computador gamer')">🎮 PC Gamer</button>
+      </div>
+    </div>
 
-<div id="chatbot">
-  <div id="chatHeader">💬 Asistente Técnico</div>
-  <div id="chatMessages"></div>
-  <div id="quickReplies"></div>
-  <div id="inputArea">
-    <input type="text" id="userInput" placeholder="Escribe tu mensaje..." />
-    <button id="sendBtn">Enviar</button>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Escribe tu mensaje..." />
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
   </div>
-</div>
 
-<script>
-  const chatMessages = document.getElementById("chatMessages");
-  const quickReplies = document.getElementById("quickReplies");
-  const userInput = document.getElementById("userInput");
-  const sendBtn = document.getElementById("sendBtn");
-
-  function appendMessage(text, sender) {
-    const message = document.createElement("div");
-    message.className = sender + "Message";
-    message.innerText = text;
-    chatMessages.appendChild(message);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function botResponse(text, replies = []) {
-    appendMessage(text, "bot");
-    quickReplies.innerHTML = "";
-    replies.forEach(reply => {
-      const btn = document.createElement("button");
-      btn.className = "replyBtn";
-      btn.innerText = reply;
-      btn.onclick = () => handleUserInput(reply);
-      quickReplies.appendChild(btn);
-    });
-  }
-
-  function handleUserInput(input) {
-    appendMessage(input, "user");
-
-    const texto = input.toLowerCase();
-
-    if (texto.includes("mantenimiento")) {
-      botResponse("Ofrecemos mantenimiento preventivo y correctivo. ¿Deseas agendar una cita?", ["Sí, agendar", "Volver"]);
-    } else if (texto.includes("repuestos") || texto.includes("componentes")) {
-      botResponse("Tenemos repuestos originales: discos SSD, RAM, tarjetas madre, ventiladores y más. ¿Qué necesitas?", ["Disco SSD", "Memoria RAM", "Volver"]);
-    } else if (texto.includes("celulares")) {
-      botResponse("Contamos con celulares nuevos y reacondicionados de alta calidad. ¿Buscas uno económico o gama alta?", ["Económico", "Gama alta", "Volver"]);
-    } else if (texto.includes("computadores gamer")) {
-      botResponse("¡Tenemos equipos gamer con GPU RTX, procesadores Ryzen y más! ¿Quieres ver precios?", ["Ver precios", "Volver"]);
-    } else if (texto.includes("agendar")) {
-      botResponse("¡Perfecto! Por favor, déjanos tu nombre y número de contacto y te llamaremos en minutos.");
-    } else if (texto.includes("volver")) {
-      mostrarOpciones();
-    } else {
-      botResponse("Lo siento, aún estoy aprendiendo. Por favor elige una opción:", ["Mantenimiento", "Repuestos", "Celulares", "Computadores Gamer"]);
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const message = input.value.trim();
+      if (!message) return;
+      appendMessage(message, 'user');
+      input.value = '';
+      botReply(message);
     }
-  }
 
-  function mostrarOpciones() {
-    botResponse("¿En qué podemos ayudarte hoy?", ["Mantenimiento", "Repuestos", "Celulares", "Computadores Gamer"]);
-  }
-
-  sendBtn.onclick = () => {
-    const text = userInput.value.trim();
-    if (text !== "") {
-      handleUserInput(text);
-      userInput.value = "";
+    function sendQuickReply(message) {
+      appendMessage(message, 'user');
+      botReply(message);
     }
-  };
 
-  userInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendBtn.click();
-  });
+    function appendMessage(text, sender) {
+      const chat = document.getElementById('chat');
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + (sender === 'user' ? 'user-bubble' : 'bot-bubble');
+      bubble.innerHTML = text;
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-  // Mensaje inicial
-  window.onload = () => {
-    botResponse("¡Hola! 👋 Soy el asistente virtual de tu empresa de tecnología. ¿En qué te puedo ayudar?", ["Mantenimiento", "Repuestos", "Celulares", "Computadores Gamer"]);
-  };
-</script>
+    function botReply(userMessage) {
+      let reply = '';
+      const msg = userMessage.toLowerCase();
 
-</body>
-</html>
+      if (msg.includes('mantenimiento')) {
+        reply = `
+        🔧 Ofrecemos los siguientes servicios de <strong>Mantenimiento</strong>:<br><br>
+        - Limpieza interna y externa: <strong>$50.000 COP</strong><br>
+        - Cambio de pasta térmica: <strong>$30.000 COP</strong><br>
+        - Formateo + optimización: <strong>$60.000 COP</strong><br>
+        - Diagnóstico completo: <strong>$25.000 COP</strong><br><br>
+        ¿Te gustaría agendar una cita o recibir estos servicios a domicilio?`;
+      } 
+      else if (msg.includes('repuestos')) {
+        reply = `
+        💽 <strong>Repuestos y Componentes Disponibles:</strong><br><br>
+        - Disco SSD 240GB: <strong>$85.000 COP</strong><br>
+        - Memoria RAM 8GB DDR4: <strong>$120.000 COP</strong><br>
+        - Pantallas para portátiles: <strong>Desde $180.000 COP</strong><br>
+        - Cargadores universales: <strong>$50.000 COP</strong><br><br>
+        ¿Qué repuesto necesitas o quieres que te asesoremos según tu equipo?`;
+      } 
+      else if (msg.includes('celular')) {
+        reply = `
+        📱 <strong>Celulares Disponibles:</strong><br><br>
+        - Xiaomi Redmi Note 13: <strong>$750.000 COP</strong><br>
+        - Samsung A15: <strong>$680.000 COP</strong><br>
+        - iPhone 12 128GB (Reacondicionado): <strong>$1.450.000 COP</strong><br><br>
+        Todos incluyen garantía de 6 meses. ¿Buscas alguna marca o presupuesto en específico?`;
+      } 
+      else if (msg.includes('gamer')) {
+        reply = `
+        🖥 <strong>Equipos Gamer Recomendados:</strong><br><br>
+        - Starter Gamer (GTX 1650, Ryzen 5, SSD 480GB): <strong>$2.500.000 COP</strong><br>
+        - Mid-Range Gamer (RTX 3060, i5 12va, SSD 1TB): <strong>$4.200.000 COP</strong><br>
+        - Pro Gamer (RTX 4070, i7 13va, SSD NVMe): <strong>$6.800.000 COP</strong><br><br>
+        ¿Te gustaría que armemos un equipo personalizado para ti o conocer opcione
